@@ -1,0 +1,20 @@
+<body bgcolor='black' style="text-align:center;"><font color = 'LightSkyBlue'>
+<h2><br><br>REGISTERATION PAGE<br><br></h2>
+<h3>HELLO AND WELCOME TO OUR WEBSITE
+    <br>
+    PLEASE SIGN UP
+</h3>
+<form method="POST" action="" >
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="Create User">
+    {{form.error}}
+    <br><br>
+    <div class="mt-4">
+        <div class="d-flex justify-content-right links">
+            Already have an account?? <a href="{% url 'login' %}" class="ml-2">LOG IN</a>
+        </div>
+    </div>
+</form>
+</font>
+<body>
