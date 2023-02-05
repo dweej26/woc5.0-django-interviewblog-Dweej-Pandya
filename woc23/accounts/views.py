@@ -1,14 +1,22 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django.urls import reverse,path
+from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse,path,reverse_lazy
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 # Create your views here.
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from .forms import OrderForm,CreateUserForm
+from .forms import CreateUserForm,Com_Form,PostForm
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+from .models import Post
+from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.conf import settings
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 def regis(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -64,3 +72,63 @@ def products(request):
 @login_required(login_url='login')
 def customer(request):
     return render(request, 'accounts/customer.html')
+
+@login_required(login_url='login')
+def addentry(request):
+    form=Com_Form();
+    if request.method == 'POST':
+        print(request.POST)
+        form = Com_Form(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'YOU HAVE SUCCESSFULLY ENTERED DETAILS')
+            return redirect('home')
+    context = {'form':form}
+    return render(request, 'accounts/add.html',context)
+
+@login_required(login_url='login')
+def posts(request):
+    return render(request,"posts.html",{price:200})
+
+@method_decorator(login_required,name='dispatch')
+class BlogView(ListView):
+    model = Post
+    template_name = "accounts/blog.html"
+    
+@method_decorator(login_required,name='dispatch')
+class DetailView(DetailView):
+    model = Post
+    template_name = "accounts/blog1.html"
+    
+@method_decorator(login_required,name='dispatch')
+class AddPostView(CreateView):
+    model = Post
+    form_class=PostForm
+    template_name='accounts/create_post.html'
+    
+@method_decorator(login_required,name='dispatch')
+class UpdatePostView(UpdateView):
+    model = Post
+    template_name='accounts/update_post.html'
+    fields=['title','body']
+    
+@method_decorator(login_required,name='dispatch')
+class DeletePostView(DeleteView):
+    model = Post
+    template_name='accounts/delete_post.html'
+    success_url=reverse_lazy('posts')
+
+@ login_required
+def favourite_list(request):
+    favourite_posts = request.user.favourites.all()
+    return render(request,'accounts/book.html',{'favourite_posts':favourite_posts})
+
+
+@ login_required
+def favourite_add(request, id):
+    post = get_object_or_404(Post, id=id)
+    if post.favourites.filter(id=request.user.id).exists():
+        post.favourites.remove(request.user)
+    else:
+        post.favourites.add(request.user)
+    return HttpResponseRedirect(post.get_absolute_url())

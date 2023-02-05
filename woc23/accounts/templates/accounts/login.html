@@ -1,4 +1,7 @@
-<body bgcolor='black' style="text-align:center;"><font color = 'LightSkyBlue' ><h2><br><br>LOGIN PAGE<br><br></h2>
+<head>
+	<title>LOGIN</title>
+</head>
+<body bgcolor="#25383C" style="text-align:center;"><font color = 'white' ><h2><br><br>LOGIN PAGE<br><br></h2>
 <h4>WELCOME BACK
 <br>PLEASE ENTER YOUR CREDENTIALS</h4>
 
@@ -15,6 +18,9 @@
     <div class="mt-4">
         <div class="d-flex justify-content-right links">
             Don't have an account?? <a href="{% url 'regis' %}" class="ml-2">REGISTER</a>
+        </div>
+        <div class="d-flex justify-content-right links">
+            Forgot Password?? <a href="{% url 'reset_password' %}" class="ml-2">RESET PASSWORD</a>
         </div>
     </div>
 </form></font>

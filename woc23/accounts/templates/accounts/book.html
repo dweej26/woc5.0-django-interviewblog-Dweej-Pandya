@@ -1,0 +1,15 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <h1>BookMark Page</h1>
+  </div>
+<ul>
+<body bgcolor="#5C595D" font="white">
+{% for post in favourite_posts %}
+    <li><a href="{% url 'postslist' post.pk %}">{{post.title}} by {{post.author}} <div id="favourite-section"><a href="{% url 'favourite_add' post.pk %}" class="btn-btn-secondary">Remove</a></div></li>
+{%endfor%}
+<hr>
+<br>
+<a href="{% url 'home' %}">back</a>
+</ul>{% endblock %}</body>

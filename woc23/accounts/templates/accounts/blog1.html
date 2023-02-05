@@ -1,0 +1,15 @@
+{% extends 'accounts/base.html' %}
+{% block content %}<body bgcolor="aliceblue"><h1>{{ post.title }}</h1>
+<small>By: {{post.author}}</small><br/>
+<hr>
+<br/>
+{{post.body}}
+<br/>
+<hr>
+{% if user.id == post.author.id %}
+<a href="{% url 'updatepost' post.pk %}">edit</a>    <br> <a href="{% url 'deletepost' post.pk %}">delete</a>
+{% endif %}
+<br>
+<div>
+<a href="{% url 'favourite_add' post.pk %}" class="btn-btn-secondary">BookMark this post</a> </div>
+{% endblock %}

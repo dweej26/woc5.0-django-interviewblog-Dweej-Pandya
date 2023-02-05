@@ -1,0 +1,16 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <h1>Posts</h1>
+  </div>
+<hr>
+<ul>
+<body bgcolor="#5C595D" font="white">
+{% for post in object_list %}
+    <li><a href="{% url 'postslist' post.pk %}">{{ post.title }}</a> by {{ post.author }} - {% if user.id == post.author.id %}<a href="{% url 'updatepost' post.pk %}">edit</a> - <a href="{% url 'deletepost' post.pk %}">delete</a><br/>{% endif %}
+    {{ post.body}}</li>
+{%endfor%}
+<hr>
+<br>
+<a href="{% url 'home' %}">back</a>
+</ul>{% endblock %}</body>
